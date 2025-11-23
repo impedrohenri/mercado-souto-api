@@ -25,12 +25,8 @@ public class SellerService {
 
         seller.setClient(clientSeller);
         seller.setActive(Boolean.TRUE);
-
-        Seller sellerSaved=sellerRepository.save(seller);
         
-        clientSeller.setSeller(sellerSaved);
-
-        return sellerSaved;
+        return sellerRepository.save(seller);
 
 
     }
@@ -50,20 +46,22 @@ public class SellerService {
 
 
     @Transactional
-    public Seller update (Long id, Seller sellerModified){
+    public Seller update (Long id, Seller modifiedSeller){
         Seller seller = findById(id);
-        seller.setCnpj(sellerModified.getCnpj());
-        seller.setSales(sellerModified.getSales());
-        seller.setBalance(sellerModified.getBalance());
+        seller.setCnpj(modifiedSeller.getCnpj());
+        seller.setSales(modifiedSeller.getSales());
+        seller.setBalance(modifiedSeller.getBalance());
        
-
+       
         return sellerRepository.save(seller);
     }
 
     @Transactional
-    public void delete (Long id){
+    public void delete(Long id){
         Seller seller = findById(id);
         seller.setActive(Boolean.FALSE);
+
+        sellerRepository.save(seller);
     }
 
 }

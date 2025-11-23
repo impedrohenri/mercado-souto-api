@@ -36,13 +36,13 @@ public class ClientService {
 
 
     @Transactional
-    public Client update (Long id, Client clientModified){
+    public Client update (Long id, Client modifiedClient){
         Client client = findById(id);
-        client.setName(clientModified.getName());
-        client.setEmail(clientModified.getEmail());
-        client.setPassword(clientModified.getPassword());
-        client.setCpf(clientModified.getCpf());
-        client.setPhone(clientModified.getPhone());
+        client.setName(modifiedClient.getName());
+        client.setEmail(modifiedClient.getEmail());
+        client.setPassword(modifiedClient.getPassword());
+        client.setCpf(modifiedClient.getCpf());
+        client.setPhone(modifiedClient.getPhone());
 
         return clientRepository.save(client);
     }
@@ -50,6 +50,11 @@ public class ClientService {
     @Transactional
     public void delete (Long id){
         Client client = findById(id);
+        if(client.getSeller()!=null){
+            client.getSeller().setActive(Boolean.FALSE);
+        }
         client.setActive(Boolean.FALSE);
+        
+        clientRepository.save(client);
     }
 }
